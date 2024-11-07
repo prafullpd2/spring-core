@@ -29,10 +29,9 @@ public class Application {
 		MyHttpServer server = ctx.getBean(MyHttpServer.class);
 		server.registerContext("/", exchange -> { 
 			String requestMethod = exchange.getRequestMethod();
-			System.out.println("request method: "+ requestMethod);
-			String res = cs.getData("https://www.google.com");
-			
-			byte[] bytes  = res.getBytes();
+			System.out.println("\n\nrequest method: "+ requestMethod +" "+ exchange.getRequestURI());
+ 
+			byte[] bytes  = cs.getData("https://www.google.com"+exchange.getRequestURI());
 			exchange.sendResponseHeaders( 200, bytes.length);
 			exchange.getResponseBody().write(bytes);
 			exchange.close();
@@ -41,10 +40,8 @@ public class Application {
 		
 		server.registerContext("/eg", exchange -> { 
 			String requestMethod = exchange.getRequestMethod();
-			System.out.println("request method: "+ requestMethod);
-			String res = cs.getData("https://www.example.com");
-			
-			byte[] bytes  = res.getBytes();
+			System.out.println("\n\nrequest method: "+ requestMethod+" "+ exchange.getRequestURI());
+			byte[] bytes = cs.getData("https://www.example.com"+exchange.getRequestURI());
 			exchange.sendResponseHeaders( 200, bytes.length);
 			exchange.getResponseBody().write(bytes);
 			exchange.close();
